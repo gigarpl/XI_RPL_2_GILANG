@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gilang Romadhon</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script src="render.js"></script><!-- defines canvas, ctx, draw() -->
+  <script src="input.js"></script><!-- attaches keyboard + touch listeners -->
+  <script src="game.js"></script> <!-- state, loop, boot -->
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gilang Romadhon | Portfolio XI RPL 2</title>
+  <style>
+    /* Reset & CSS Variables */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    :root {
+      --bg-dark: #0a0f1d;
+      --card-bg: rgba(22, 31, 52, 0.75);
+      --card-border: rgba(56, 189, 248, 0.2);
+      --accent-cyan: #38bdf8;
+      --accent-purple: #a855f7;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 30px 15px;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Glass Card Style */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+    }
+
+    /* 1. Hero Section */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+      object-fit: cover;
+      flex-shrink: 0;
+      background-color: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-sub);
+      font-size: 0.8rem;
+    }
+
+    .hero-text h1 {
+      font-size: 2rem;
+      background: linear-gradient(to right, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+    }
+
+    .hero-text p {
+      color: var(--text-sub);
+      font-size: 1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 12px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Section Header */
+    .section-title {
+      font-size: 1.2rem;
+      color: var(--accent-cyan);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--card-border);
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    /* List Item */
+    .info-list {
+      list-style: none;
+    }
+
+    .info-list li {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(255,255,255,0.05);
+      padding-bottom: 6px;
+    }
+
+    .info-list span {
+      color: var(--text-sub);
+    }
+
+    .info-list strong {
+      color: var(--text-main);
+      text-align: right;
+    }
+
+    /* Timeline Style */
+    .timeline-item {
+      position: relative;
+      padding-left: 20px;
+      border-left: 2px solid var(--accent-purple);
+      margin-bottom: 15px;
+    }
+
+    .timeline-item h4 {
+      color: var(--text-main);
+      font-size: 1rem;
+    }
+
+    .timeline-item .sub {
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+    }
+
+    .timeline-item p {
+      color: var(--text-sub);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    /* Tags / Skills */
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-item {
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #d8b4fe;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+
+    /* Gallery */
+    .gallery-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-card {
+      height: 140px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: #0f172a;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 0.85rem;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+      .info-list li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .info-list strong {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. HEADER / HERO SECTION -->
+    <header class="glass-card hero">
+      <!-- Ganti foto1.jpg dengan foto profilmu -->
+      <img src="foto.jpg" alt="Gilang " class="hero-img" onerror="this.outerHTML='<div class=\'hero-img\'>Foto Profil</div>'">
+      <div class="hero-text">
+        <h1></h1>
+        <p>Software Engineering Student (PPLG / RPL)</p>
+        <span class="badge">SMKN 3 Kendal • XI RPL 2</span>
+      </div>
+    </header>
+
+    <!-- 2. BIODATA & DESKRIPSI -->
+    <div class="grid-2">
+      <section class="glass-card">
+        <h2 class="section-title">Biodata Diri</h2>
+        <ul class="info-list">
+          <li><span>Nama Panggilan:</span> <strong>Gilang</strong></li>
+          <li><span>TTL:</span> <strong>Semarang, 3 Juni 2009</strong></li>
+          <li><span>Kelas:</span> <strong>XI RPL 2 (PPLG)</strong></li>
+          <li><span>Sekolah:</span> <strong>SMKN 3 Kendal</strong></li>
+          <li><span>Alamat:</span> <strong>sasak, meteseh,boja ,kendal </strong></li>
+        </ul>
+      </section>
+
+      <section class="glass-card">
+        <h2 class="section-title">Deskripsi Pribadi</h2>
+        <p style="color: var(--text-sub); font-size: 0.95rem;">
+          Saya adalah siswa SMK jurusan Rekayasa Perangkat Lunak yang antusias terhadap pengembangan perangkat lunak, perancangan basis data, dan pembuatan konten media interaktif. Ceria, berdedikasi, serta terbiasa beradaptasi dengan alur kerja tim maupun tugas individu.
+        </p>
+      </section>
+    </div>
+
+    <!-- 3. PENDIDIKAN & ORGANISASI -->
+    <div class="grid-2">
+      <section class="glass-card">
+        <h2 class="section-title">Riwayat Pendidikan</h2>
+        <div class="timeline-item">
+          <h4>SDN 05 METESEH </h4>
+          <span class="sub">Sekolah Dasar</span>
+        </div>
+        <div class="timeline-item">
+          <h4>SMP PGRI 03 BOJA</h4>
+          <span class="sub">Sekolah Menengah Pertama</span>
+        </div>
+        <div class="timeline-item">
+          <h4>SMKN 3 Kendal</h4>
+          <span class="sub">PPLG / RPL (2024 - Sekarang)</span>
+        </div>
+      </section>
+
+      <section class="glass-card">
+        <h2 class="section-title">Riwayat Organisasi</h2>
+        <div class="timeline-item">
+          <h4>Pengurus OSIS</h4>
+          <span class="sub">SMP PGRI 03 BOJA</span>
+          <p>
+            Dipercaya menjadi <strong>ketua Osis</strong> pada tahun pertama dan <strong></strong> dipercaya  Mengelola kegiatan 
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- 4. KOMPETENSI & KELEBIHAN -->
+    <div class="grid-2">
+      <section class="glass-card">
+        <h2 class="section-title">Kompetensi yang Dimiliki</h2>
+        <div class="pills">
+          <span class="pill-item">HTML5 & CSS3</span>
+          <span class="pill-item">System Analysis (DFD)</span>
+          <span class="pill-item">ERD & Database Design</span>
+          <span class="pill-item">Video Editing (CapCut)</span>
+          <span class="pill-item">Olahraga</span>
+        </div>
+      </section>
+
+      <section class="glass-card">
+        <h2 class="section-title">Kelebihan Diri</h2>
+        <ul style="color: var(--text-sub); font-size: 0.9rem; padding-left: 18px;">
+          <li style="margin-bottom: 6px;">Cermat dalam analisis alur sistem dan struktur basis data.</li>
+          <li style="margin-bottom: 6px;">Pengalaman kepemimpinan & pengarsipan berkas organisasi.</li>
+          <li style="margin-bottom: 6px;">Kreatif dalam mengedit video presentasi dan konten media.</li>
+          <li>bertanggung jawab </li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- 5. PRESTASI & PORTOFOLIO -->
+    <section class="glass-card">
+      <h2 class="section-title">Prestasi & Portofolio Karya</h2>
+      <div class="grid-3" style="margin-top: 15px;">
+        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; border: 1px solid var(--card-border);">
+          <h3 style="font-size: 1rem; color: var(--accent-cyan); margin-bottom: 6px;">Pengurus OSIS 2 Periode</h3>
+          <p style="color: var(--text-sub); font-size: 0.85rem;">Keaktifan dan kontribusi sebagai ketua OSIS selama 2 tahun berturut-turut.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. GALERI FOTO -->
+    <section class="glass-card">
+      <h2 class="section-title">Galeri Foto</h2>
+      <div class="gallery-container">
+        <div class="gallery-card">
+          <img src="profil.jpg" alt="Foto Profil" onerror="this.parentNode.innerHTML='<div style=\'display:flex;height:100%;align-items:center;justify-content:center;color:#94a3b8;font-size:0.8rem;\'>[ Foto Profil ]</div>'">
+        </div>
+        <div class="gallery-card">
+          <img src="kegiatan.jpg" alt="Kegiatan Sekolah" onerror="this.parentNode.innerHTML='<div style=\'display:flex;height:100%;align-items:center;justify-content:center;color:#94a3b8;font-size:0.8rem;\'>[ Kegiatan Sekolah ]</div>'">
+        </div>
+        <div class="gallery-card">
+          <img src="hobi.jpg" alt="Hobi / Aktivitas" onerror="this.parentNode.innerHTML='<div style=\'display:flex;height:100%;align-items:center;justify-content:center;color:#94a3b8;font-size:0.8rem;\'>[ Foto Hobi ]</div>'">
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2026 Gilang Romadhon • XI RPL 2 SMKN 3 Kendal
+    </footer>
+
+  </div>
+
+</body>
+</html>
